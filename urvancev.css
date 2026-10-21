@@ -1,0 +1,202 @@
+/*! urvancev-ux v1.0.0 | CSS для лендинга «Антикризисная стратегическая сессия» (Tilda)
+ *  Подключается в HEAD ПОСЛЕ стилей Tilda. Цвета бренда не меняются.
+ *  Меняйте переменные в :root, а не отдельные правила.
+ */
+
+:root {
+  --u-font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --u-header-h: 64px;            /* JS подставит реальную высоту фиксированного меню */
+  --u-cta-bg: #111;              /* JS возьмёт цвет с вашей кнопки «Оставить заявку» */
+  --u-cta-fg: #fff;
+  --u-cta-radius: 8px;
+  --u-par-gap: 1em;              /* расстояние между абзацами */
+}
+
+/* ---------- Базовое поведение страницы ---------- */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--u-header-h) + 12px);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;              /* страховка от горизонтальной прокрутки на телефоне */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#allrecords img { max-width: 100%; height: auto; }
+
+/* ---------- Шрифт: Montserrat везде, заголовки Bold ---------- */
+
+body,
+#allrecords,
+#allrecords :where(h1, h2, h3, h4, h5, h6, p, li, a, span, div, b, strong, em,
+                   button, input, textarea, select, label, td, th) {
+  font-family: var(--u-font) !important;
+}
+
+#allrecords :where(h1, h2, h3, h4, h5, h6, .t-title, .t-heading, .t-name) {
+  font-weight: 700 !important;
+}
+
+#allrecords :where(strong, b) { font-weight: 600; }
+
+/* ---------- Переносы строк ---------- */
+
+/* Заголовки: ровные строки без одинокого слова в конце */
+#allrecords :where(h1, h2, h3, h4, .t-title, .t-heading, .t-name) {
+  text-wrap: balance;
+  hyphens: none;
+  overflow-wrap: break-word;
+}
+
+/* Текст: без «висячих» коротких хвостов, без автопереносов слов */
+#allrecords :where(p, li, .t-text, .t-descr) {
+  text-wrap: pretty;
+  hyphens: manual;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* ---------- Абзацы ---------- */
+
+/* Абзацы, которые JS собрал из двойных <br> */
+#allrecords .u-p { margin: 0 0 var(--u-par-gap) !important; }
+#allrecords .u-p:last-child { margin-bottom: 0 !important; }
+
+/* Жирный заход в начале абзаца («Кризис называем вслух.») — отдельной строкой */
+#allrecords .u-lead {
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+#allrecords .t-container :where(li) { margin-bottom: 0.5em; }
+#allrecords .t-container :where(li:last-child) { margin-bottom: 0; }
+
+/* Блоки «вопрос — ответ» и модальные письма: воздух между абзацами */
+#allrecords .t-popup :where(p, .u-p) { margin-bottom: 1em; }
+
+/* ---------- Мобильная версия ---------- */
+
+@media (max-width: 640px) {
+
+  /* Основной текст */
+  #allrecords .t-container :where(.t-text, .t-descr, p, li) {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Вводные абзацы чуть крупнее */
+  #allrecords .t-container :where(.t-descr) {
+    font-size: 17px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Заголовок первого экрана */
+  #allrecords .t-container :where(h1, .t-title_xxl, .t-title_xl) {
+    font-size: clamp(26px, 7.4vw, 32px) !important;
+    line-height: 1.18 !important;
+    margin-bottom: 0.5em;
+  }
+
+  /* Заголовки разделов */
+  #allrecords .t-container :where(h2, .t-title) {
+    font-size: clamp(22px, 6.2vw, 28px) !important;
+    line-height: 1.22 !important;
+  }
+
+  /* Подзаголовки карточек и пунктов */
+  #allrecords .t-container :where(h3, h4, .t-heading, .t-name) {
+    font-size: 19px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Крупные тап-зоны */
+  #allrecords :where(.t-btn, .t-submit, button, [type='submit']) {
+    min-height: 48px;
+  }
+
+  /* Контакты в подвале и текстовые ссылки */
+  #allrecords .t-container :where(a[href^='tel:'], a[href^='mailto:'], a[href*='t.me']) {
+    display: inline-block;
+    padding: 10px 0;
+  }
+
+  /* Формы: 16px, чтобы iOS не увеличивал страницу при фокусе */
+  #allrecords :where(.t-input, .t-select, textarea.t-input) {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+  #allrecords .t-input-group { margin-bottom: 16px; }
+  #allrecords .t-input-title { font-size: 14px !important; line-height: 1.4 !important; }
+  #allrecords .t-checkbox__control { font-size: 14px !important; line-height: 1.5 !important; }
+}
+
+/* ---------- Нижняя панель быстрой связи (только телефон/планшет) ---------- */
+
+.u-cta { display: none; }
+
+@media (max-width: 768px) {
+  .u-cta {
+    display: flex;
+    gap: 8px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9990;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.96);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(110%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+  .u-cta.is-visible {
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .u-cta__main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 16px;
+    background: var(--u-cta-bg);
+    color: var(--u-cta-fg) !important;
+    border-radius: var(--u-cta-radius);
+    font: 600 15px/1.2 var(--u-font);
+    text-decoration: none;
+  }
+  .u-cta__call {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    min-height: 48px;
+    border: 2px solid var(--u-cta-bg);
+    border-radius: var(--u-cta-radius);
+    color: var(--u-cta-bg);
+  }
+  .u-cta__call svg { width: 22px; height: 22px; fill: currentColor; }
+  .u-cta a:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+}
+
+/* ---------- Уважение к настройкам «уменьшить движение» ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #allrecords *,
+  .u-cta {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
